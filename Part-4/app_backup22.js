@@ -21,7 +21,7 @@ var expressSession = require('express-session');
 //mongoose 모듈 불러들이기 (Schema 생성, model 정의 위함)
 // var mongoose = require('mongoose');
 // crypto 모듈 불러들이기
-// var crypto = require('crypto');
+// var crypto = reuqire('crypto');
 
 //routes의 user 모듈 불러오기
 var user = require('./routes/user');

@@ -2,7 +2,6 @@
  * 데이터베이스 스키마 로딩
  */
 
-
 var mongoose = require('mongoose');
 
 // database 객체에 db, schema, model 모두 추가
@@ -24,6 +23,7 @@ function connect(app, config) {
   // mongoose의 Promise 객체는 global의 Promise 객체 사용하도록 함
   mongoose.Promise = global.Promise;
 	mongoose.connect(config.db_url);
+	console.log("config.db_url : [%s]", config.db_url);
 	database.db = mongoose.connection;
 
 	database.db.on('error', console.error.bind(console, 'mongoose connection error.'));

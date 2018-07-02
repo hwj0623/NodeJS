@@ -1,28 +1,77 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <meta charset="UTF-8">
-  <title> 사용자 추가 테스트 </title>
-</head>
-<body>
-  <h1>사용자 추가  </h1>
-  <br>
-  <form method="post" action="/process/adduser">
-    <table>
-      <tr>
-        <td><label>ID </label></td>
-        <td><input type="text" name="id"></td>
-      </tr>
-      <tr>
-        <td><label>password </label></td>
-        <td><input type="password" name="password"></td>
-      </tr>
-      <tr>
-        <td><label>username </label></td>
-        <td><input type="text" name="name"></td>
-      </tr>
-    </table>
-    <input type="submit" value="전송" name="">
-  </form>
-</body>
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
+
+		<title>사용자 추가</title>
+
+		<link href="./semantic.min.css" rel="stylesheet" >
+		<link href="./common.css" rel="stylesheet" >
+		<script src="./jquery-3.1.1.min.js"></script>
+		<script src="./semantic.min.js"></script>
+
+	</head>
+	<body>
+
+		<div class="container adduser">
+      <div class="layout-sub">
+      </div>
+      <div class="layout">
+			<div id="cardbox" class="ui green fluid card">
+				 <div class="content">
+				 	<div class="left floated author">
+				 		<img id="iconImage" class="ui avatar image" src="./images/author3.png">
+					</div>
+					<div>
+						<div id="titleText" class="header">사용자 추가</div>
+	   					<div id="contentsText" class="description">
+					       	정보를 입력하고 [추가] 버튼을 누르세요.
+					    </div>
+					</div>
+				 </div>
+				<form id="form1" method="post" action="/process/adduser">
+					<table>
+						<tr class="row">
+							<td class="col1"><label id="contentsText">아이디</label></td>
+							<td class="col2" colspan="2">
+								<div class="ui input">
+									<input class="inputbox" type="text" name="id" placeholder="아이디 입력" />
+								</div>
+							</td>
+							<td></td>
+						</tr>
+						<tr class="row">
+							<td class="col1"><label id="contentsText">비밀번호</label></td>
+							<td class="col2" colspan="2">
+								<div class="ui input">
+									<input class="inputbox" type="password" name="password" placeholder="비밀번호 입력" />
+								</div>
+							</td>
+							<td></td>
+						</tr>
+						<tr class="row">
+							<td class="col1"><label id="contentsText">사용자명</label></td>
+							<td class="col2" colspan="2">
+								<div class="ui input">
+									<input class="inputbox" type="text" name="name" placeholder="사용자이름 입력" />
+								</div>
+							</td>
+							<td></td>
+						</tr>
+						<tr valign="baseline">
+							<td></td>
+							<td>
+							</td>
+							<td id="buttonContainer" align="right"><input id="submitButton" class="ui primary button" type="submit" value="추가" name="" /></td>
+						</tr>
+					</table>
+
+				</form>
+
+			</div>
+
+		</div>
+  </div>
+	</body>
 </html>
