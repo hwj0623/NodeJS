@@ -8,7 +8,7 @@ tempHuSchema.createSchema = function (mongoose){
   var TH_Schema = mongoose.Schema({
     humid: {type: Number, 'default':' '},
     temp : {type: Number, 'default':' '},                //index 생성
-    time : {type: Date, },
+    time : {type: Date},
   });
 
   TH_Schema.plugin(mongoosePaginate);
@@ -43,15 +43,15 @@ tempHuSchema.createSchema = function (mongoose){
   		return this.find({}, callback);
   	});
 
-    TH_Schema.static('findMax', function(temp, callback) {
+    TH_Schema.static('findMax', function( callback) {
       console.log("=== findMax 호출 ===");
-      // console.dir(this.find().sort({temp:-1}).limit(1));
-      return this.find({}, callback).limit(1).sort("-temp");
+      console.log(this.find({}).limit(1).sort({temp : -1}));
+      return this.find({}, callback).limit(1).sort({temp: -1});
     });
 
-    TH_Schema.static('findMin', function(temp, callback) {
+    TH_Schema.static('findMin', function( callback) {
       console.log("=== findMin 호출 ===")
-      return this.find({}, callback).limit(1).sort("temp");
+      return this.find({}, callback).limit(1).sort({temp : 1});//.aggregate([{$sort : {temp : 1}}, {$limit:1}]);
     });
     console.log('TH_Schema 정의함 ');
 
