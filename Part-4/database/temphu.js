@@ -1,6 +1,8 @@
 var tempHuSchema = { };
 var mongoosePaginate = require('mongoose-paginate');
 
+var num = 0;
+
 tempHuSchema.createSchema = function (mongoose){
   //스키마 정의
   var TH_Schema = mongoose.Schema({
@@ -9,14 +11,12 @@ tempHuSchema.createSchema = function (mongoose){
     time : {type: Date, },
   });
 
-
   TH_Schema.plugin(mongoosePaginate);
     // 메소드 만들기
     // TH_Schema.method('makeSalt', function(){
     //   return Math.round((new Date().valueOf()*Math.random()))+'';
     //
     // });
-
 
     // 필수 속성에 대한 유효성 확인 (길이값 체크)
     TH_Schema.path('humid').validate(function(humid){
@@ -32,24 +32,27 @@ tempHuSchema.createSchema = function (mongoose){
   	}, 'time 칼럼의 값이 없습니다.');
 
     // 스키마에 static 메소드 추가
-  	TH_Schema.static('findById', function( callback) {
-      var curCnt = this.find({}, callback).count();
-      console.log("///// cur Cnt : "+curCnt);
-      // if(curCnt < num){
-      //   num=0;
-      // }
-      var id = "5b3360a074fece06174b9938";
-      console.dir(this.find({id:id}));
-      return this.find({id:id}, callback);
-  		// return this.paginate({},{ skip: num*1, limit: 10 }, callback);
+  	TH_Schema.static('findByPage', function( callback) {
+      console.log("@@@@@@@@@@ num : "+num);
+      return this.find({}, callback).limit(1).skip(num++).sort({data:1});
   	});
 
-  	TH_Schema.static('findAll', function(callback) {
+  	TH_Schema.static('findAll', function( callback) {
       console.log("=== find all 호출 ===")
-      console.dir(this.find({}));
+      // console.dir(this.find({}));
   		return this.find({}, callback);
   	});
 
+    TH_Schema.static('findMax', function(temp, callback) {
+      console.log("=== findMax 호출 ===");
+      // console.dir(this.find().sort({temp:-1}).limit(1));
+      return this.find({}, callback).limit(1).sort("-temp");
+    });
+
+    TH_Schema.static('findMin', function(temp, callback) {
+      console.log("=== findMin 호출 ===")
+      return this.find({}, callback).limit(1).sort("temp");
+    });
     console.log('TH_Schema 정의함 ');
 
     return TH_Schema;

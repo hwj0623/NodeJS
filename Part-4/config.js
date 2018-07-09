@@ -1,7 +1,8 @@
 module.exports = {
 
   server_port : 3000,
-  db_url : 'mongodb://localhost:27017/local',
+  // db_url : 'mongodb://localhost:27017/local',
+  db_url : 'mongodb://hwj0623:part4@ec2-13-209-15-87.ap-northeast-2.compute.amazonaws.com:27017/hitech',
   db_schemas:[
     {
       file:'./user_schema',
@@ -35,9 +36,12 @@ module.exports = {
       {
         file : './temp_humid_info', path:'/process/info1', method : 'listInfoById', type:'get'
       },
-      // {
-      //   file : './temp_humid_info', path:'/process/info', method : 'listInfoAll', type:'get'
-      // }
+      {
+        file : './temp_humid_info', path:'/process/info', method : 'listInfoAll', type:'get'
+      },
+      {
+        file : './temp_humid_info', path:'/process/info/stat', method : 'listInfoStat', type:'get'
+      }
 
   ]
 }

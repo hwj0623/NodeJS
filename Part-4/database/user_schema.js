@@ -65,7 +65,7 @@ Schema.createSchema = function (mongoose){
   			next();
   		}
   	})
-    
+
     // 필수 속성에 대한 유효성 확인 (길이값 체크)
     UserSchema.path('id').validate(function(id){
       return id.length;

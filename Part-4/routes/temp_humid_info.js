@@ -109,6 +109,57 @@
 // 	}
 //
 // };
+// var listInfoByPage = function(req, res) {
+//     console.log('temp_humid_info 모듈 안에 있는 listInfoById 호출됨.');
+//
+//       // 데이터베이스 객체 참조
+//     var database = req.app.get('database');
+//
+//     // 데이터베이스 객체가 초기화된 경우, 모델 객체의 findByPage 메소드 호출
+//     if (database.db) {
+//       console.log("====== database db ======");
+//       console.dir(database.db);
+//       // 1. 모든 정보 검색
+//       database.tempHuModel.findByPage(function(err, results) {
+//         // 에러 발생 시, 클라이언트로 에러 전송
+//         if (err) {
+//           console.error('온도/습도 조회 중 에러 발생 : ' + err.stack);
+//           res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+//           res.write('<h2>사용자 리스트 조회 중 에러 발생</h2>');
+//           res.write('<p>' + err.stack + '</p>');
+//           res.end();
+//           return;
+//         }
+//
+//         if (results) {
+//           console.log("========results 출력====== ");
+//           console.dir(results);
+//           var response = new Array();
+//           for(var i=0; i<results.length; i++){
+//             var obj = {};
+//             obj.humidity = results[i]._doc.humid;
+//             obj.temperature = results[i]._doc.temp;
+//             var tmpDate = new Date(results[i]._doc.date);
+//             console.log("날짜 : ", tmpDate);
+//             obj.originalDate = tmpDate;
+//             response.push(obj);
+//           }
+//           res.statusCode = 200;
+//           return res.send({"data":response});
+//
+//         } else {
+//           res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+//           res.write('<h2>사용자 리스트 조회  실패</h2>');
+//           res.end();
+//         }
+//       });
+//     } else {
+//       res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+//       res.write('<h2>데이터베이스 연결 실패</h2>');
+//       res.end();
+//     }
+// };
+var num = 1;
 var listInfoById = function(req, res) {
     console.log('temp_humid_info 모듈 안에 있는 listInfoById 호출됨.');
 
@@ -118,37 +169,89 @@ var listInfoById = function(req, res) {
     // 데이터베이스 객체가 초기화된 경우, 모델 객체의 findAll 메소드 호출
     if (database.db) {
       console.log("====== database db ======");
-      console.dir(database.db);
+      // console.dir(database.db);
+      // 1. 모든 정보 검색
+      database.tempHuModel.findByPage(function(err, results) {
+        // 에러 발생 시, 클라이언트로 에러 전송
+        if (err) {
+          console.error('온도/습도 조회 중 에러 발생 : ' + err.stack);
+          // res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+          // res.write('<h2>사용자 리스트 조회 중 에러 발생</h2>');
+          // res.write('<p>' + err.stack + '</p>');
+          // res.end();
+          return;
+        }
+        //Data 조회 성공시
+        if (results) {
+          console.log("========@@@ findByPage results 출력 @@@====== ");
+          // console.dir(results);
+          var response = new Array();
+          for(var i=0; i<results.length; i++){
+            var obj = {};
+            obj.humidity = results[0]._doc.humid;
+            obj.temperature = results[0]._doc.temp;
+            obj.date =  results[0]._doc.time.getTime();
+            obj.originalDate = results[0]._doc.time;
+            response.push(obj);
+          }
+          console.log("======== response ========");
+          console.log(response);
+          res.body = response;
+          // res.statusCode = 200;
+          return res.send({data:response});
+        } else {
+          // res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+          // res.write('<h2>사용자 리스트 조회  실패</h2>');
+          // res.end();
+        }
+      });
+
+    } else {
+      console.log("=====데이터베이스 연결 실패=====");
+      // res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+      // res.write('<h2>데이터베이스 연결 실패</h2>');
+      // res.end();
+    }
+};
+
+
+var listInfoAll = function(req, res) {
+    console.log('temp_humid_info 모듈 안에 있는 listInfoByAll 호출됨.');
+
+      // 데이터베이스 객체 참조
+    var database = req.app.get('database');
+
+    // 데이터베이스 객체가 초기화된 경우, 모델 객체의 findAll 메소드 호출
+    if (database.db) {
+      console.log("====== database db ======");
+      // console.dir(database.db);
       // 1. 모든 정보 검색
       database.tempHuModel.findAll(function(err, results) {
         // 에러 발생 시, 클라이언트로 에러 전송
         if (err) {
           console.error('온도/습도 조회 중 에러 발생 : ' + err.stack);
-
           res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
           res.write('<h2>사용자 리스트 조회 중 에러 발생</h2>');
           res.write('<p>' + err.stack + '</p>');
           res.end();
           return;
         }
-
+        //Data 조회 성공시
         if (results) {
-          console.log("========results 출력====== ");
-          console.dir(results);
-
-          // res.writeHead('200', {'Content-Type':'application/json;charset=utf8'});
-          // res.write('<h2>온도/습도 리스트</h2>');
-          // res.write('<div><ul>');
-          //
-          // for (var i = 0; i < results.length; i++) {
-          //   var curId = results[i]._doc.id;
-          //   var curName = results[i]._doc.name;
-          //   res.write('    <li>#' + i + ' : ' + curId + ', ' + curName + '</li>');
-          // }
-
-          // res.write('</ul></div>');
-          res.json(results);
-          // res.end();
+          console.log("========@@@ findAll results 출력 @@@====== ");
+          // console.dir(results);
+          var response = new Array();
+          for(var i=0; i<results.length; i++){
+            var obj = {};
+            obj.humidity = results[i]._doc.humid;
+            obj.temperature = results[i]._doc.temp;
+            obj.date =  results[i]._doc.time.getTime();
+            obj.originalDate = results[i]._doc.time;
+            response.push(obj);
+          }
+          res.body = response;
+          res.statusCode = 200;
+          return res.send({data:response});
         } else {
           res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
           res.write('<h2>사용자 리스트 조회  실패</h2>');
@@ -162,64 +265,93 @@ var listInfoById = function(req, res) {
     }
 };
 
-/*
-* 사용자 조회 함수 - authUser : 아이디로 먼저 찾고, 비밀번호를 그 다음에 비교
-*/
-// var authUser = function(database, id, password, callback){
-//   console.log('authUser 호출됨 ');
-//
-//   //1. 아이디를 사용해서 검색
-//   database.UserModel.findById(id, function(err, results){
-//     if(err){
-//       callback(err, null);
-//       return;
-//     }
-//     console.log('아이디[%s]로 사용자 검색 결과.', id);
-//     console.dir(results);
-//
-//     if(results.length > 0){
-//       console.log('아이디와 일치하는 사용자 찾음.');
-//       //2. 비밀번호 확인 : 모델 인스턴스 객체를 만들고 authenticate() 메소드 호출
-//       var user = new database.UserModel({id:id});
-//       var authenticated = user.authenticate(password, results[0]._doc.salt, results[0]._doc.hashed_password);
-//       if(authenticated){
-//         console.log('비밀번호 일치함');
-//         callback(null, results);
-//       }else{
-//         console.log('비밀번호 불일치');
-//         callback(null, null);
-//       }
-//
-//     }else{
-//       console.log('아이디와 일치하는 사용자 찾지 못함');
-//       callback(null, null);
-//     }
-//
-//   });
-//
-// };
+var listInfoStat = function(req, res) {
+    console.log('@@@ temp_humid_info 모듈 안에 있는 listInfoStat 호출됨.');
 
-/*
-* 사용자 추가 함수 - addUser
-*/
-// var addUser = function(database, id, password, name, callback){
-//   console.log('addUser 호출됨 : '+id+', '+password+' , '+name);
-//
-//   //USerModel의 인스턴스 생성
-//   var user = new database.UserModel({"id":id, "password":password, "name":name});
-//   // save()로 저장
-//   user.save(function(err){
-//     if(err){
-//       callback(err, null);
-//       return;
-//     }
-//     console.log('사용자 데이터 추가함.');
-//     callback(null, user);
-//   });
-// }
+      // 데이터베이스 객체 참조
+    var database = req.app.get('database');
+    var responseMax = null;
+    var responseMin = null;
+    // 데이터베이스 객체가 초기화된 경우, 모델 객체의 findAll 메소드 호출
+    if (database.db) {
+      // console.log("====== database db ======");
+      // console.dir(database.db);
+      // 1. 최대습도/온도 정보 검색
+
+      database.tempHuModel.findMax(function(err, results) {
+        // 에러 발생 시, 클라이언트로 에러 전송
+        if (err) {
+          console.error('온도/습도 조회 중 에러 발생 : ' + err.stack);
+          res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+          res.write('<h2>사용자 리스트 조회 중 에러 발생</h2>');
+          res.write('<p>' + err.stack + '</p>');
+          res.end();
+          return;
+        }
+        //Data 조회 성공시
+        if (results) {
+          console.log("#######=====##### results : ");
+          console.log(results);
+          var response = new Array();
+          var obj = {};
+          obj.maxHumidity = results[0]._doc.humid;
+          obj.maxTemperature = results[0]._doc.temp;
+          var tmpDate = new Date(results[0]._doc.date);
+          obj.originalDate = tmpDate;
+          response.push(obj);
+          console.log("responseMax : ", response);
+
+          responseMax = response;
+
+        } else {
+          res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+          res.write('<h2>사용자 리스트 조회  실패</h2>');
+          res.end();
+        }
+      });
+        // 2. 최저습도/온도 정보 검색
+      database.tempHuModel.findMin(function(err, results) {
+        // 에러 발생 시, 클라이언트로 에러 전송
+        if (err) {
+          console.error('온도/습도 조회 중 에러 발생 : ' + err.stack);
+          res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+          res.write('<h2>사용자 리스트 조회 중 에러 발생</h2>');
+          res.write('<p>' + err.stack + '</p>');
+          res.end();
+          return;
+        }
+        //Data 조회 성공시
+        if (results) {
+          var response = new Array();
+          var obj = {};
+          obj.maxHumidity = results[0]._doc.humid;
+          obj.maxTemperature = results[0]._doc.temp;
+          var tmpDate = new Date(results[0]._doc.date);
+          obj.originalDate = tmpDate;
+          response.push(obj);
+          console.log("responseMin : ", response);
+          responseMin = response;
+
+        } else {
+          res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+          res.write('<h2>사용자 리스트 조회  실패</h2>');
+          res.end();
+        }
+      });
+
+      if(responseMax != null && responseMax != undefined &&
+                    responseMin != null && responseMin != undefined){
+        }
+        res.statusCode = 200;
+        return res.send([{"max":responseMax}, {"min":responseMin}]);
+    } else {
+      res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+      res.write('<h2>데이터베이스 연결 실패</h2>');
+      res.end();
+    }
+};
 
 
-// module.exports.listInfoAll = listInfoAll;
+module.exports.listInfoAll = listInfoAll;
 module.exports.listInfoById = listInfoById;
-// module.exports.adduser = adduser;
-// module.exports.listuser = listuser;
+module.exports.listInfoStat = listInfoStat;
