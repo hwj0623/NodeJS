@@ -45,7 +45,7 @@ tempHuSchema.createSchema = function (mongoose){
 
     TH_Schema.static('findMax', function( callback) {
       console.log("=== findMax 호출 ===");
-      console.log(this.find({}).limit(1).sort({temp : -1}));
+      // console.log(this.find({}).limit(1).sort({temp : -1}));
       return this.find({}, callback).limit(1).sort({temp: -1});
     });
 

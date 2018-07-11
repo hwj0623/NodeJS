@@ -104,6 +104,8 @@ $(function() {
       type : 'GET',
       success : function(data){
         console.log("Min/Max data : ", data);
+        $('.max-temperature').text(data[0]["max"][0].maxTemperature);
+        $('.min-temperature').text(data[1]["min"][0].minTemperature);
       }
     });
 
@@ -213,7 +215,18 @@ $(function() {
 //           // for(var i=0; i<res.data.length; i++){
 //             temp.push([res.data[0].date, res.data[0].temperature]);
 //             humid.push([res.data[0].date, res.data[0].humidity]);
-//           // }
+               // $('.current-humidity').text(res.data[0].humidity);
+               // var curMaxTemp = Number($('.max-temperature').text());
+               // var curMinTemp = Number($('.min-temperature').text());
+               // if ( curMaxTemp < res.data[0].temperature){
+                      // curMaxTemp = res.data[0].temperature;
+                      // $('.max-temperature').text(curMaxTemp);
+               // }
+               // if ( curMinTemp > res.data[0].temperature){
+                      // curMinTemp = res.data[0].temperature;
+                      // $('.min-temperature').text(curMinTemp);
+               // }
+//
 //         }
 //       })
 //     };

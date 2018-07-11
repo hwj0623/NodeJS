@@ -1,7 +1,7 @@
 module.exports = {
 
   server_port : 3000,
-  db_url : 'mongodb://localhost:27017/local',
+  // db_url : 'mongodb://localhost:27017/local',
   db_schemas:[
     {
       file:'./user_schema',
@@ -14,6 +14,12 @@ module.exports = {
         collection:'temphus',
         schemaName : 'tempHuSchema',
         modelName : 'tempHuModel'
+    },
+    {
+        file:'./human_cnt',
+        collection:'human_cnt',
+        schemaName : 'humanCountSchema',
+        modelName : 'humanCountModel'
     }
   ],
   route_info : [

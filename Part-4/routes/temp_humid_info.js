@@ -281,14 +281,12 @@ function getMax(database){
         res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
         res.write('<h2>사용자 리스트 조회 중 에러 발생</h2>');
         res.write('<p>' + err.stack + '</p>');
-
-
         res.end();
         return;
       }
       //Data 조회 성공시
       if (results) {
-        console.log("#######=====##### results : ");
+        console.log("#######=MAX=##### results : ");
         console.log(results);
         var response = new Array();
         var obj = {};
@@ -313,35 +311,39 @@ function getMax(database){
 }
 function getMin(database){
   return new Promise(function (resolve, reject){
-  database.tempHuModel.findMin(function(err, results) {
-    // 에러 발생 시, 클라이언트로 에러 전송
-    if (err) {
-      console.error('온도/습도 조회 중 에러 발생 : ' + err.stack);
-      res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
-      res.write('<h2>사용자 리스트 조회 중 에러 발생</h2>');
-      res.write('<p>' + err.stack + '</p>');
-      res.end();
-      return;
-    }
-    //Data 조회 성공시
-    if (results) {
-      var response = new Array();
-      var obj = {};
-      obj.minHumidity = results[0]._doc.humid;
-      obj.minTemperature = results[0]._doc.temp;
-      obj.date = results[0]._doc.time.getTime();
-      obj.originalDate = results[0]._doc.time;
-      response.push(obj);
-      console.log("responseMin : ", response);
-      responseMin = response;
-
-    } else {
-      res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
-      res.write('<h2>사용자 리스트 조회  실패</h2>');
-      res.end();
-    }
+    database.tempHuModel.findMin(function(err, results) {
+      // 에러 발생 시, 클라이언트로 에러 전송
+      if (err) {
+        console.error('온도/습도 조회 중 에러 발생 : ' + err.stack);
+        res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+        res.write('<h2>사용자 리스트 조회 중 에러 발생</h2>');
+        res.write('<p>' + err.stack + '</p>');
+        res.end();
+        return;
+      }
+      //Data 조회 성공시
+      if (results) {
+        var response = new Array();
+        var obj = {};
+        console.log("#######=MIN=##### results : ");
+        console.log(results);
+        obj.minHumidity = results[0]._doc.humid;
+        obj.minTemperature = results[0]._doc.temp;
+        obj.date = results[0]._doc.time.getTime();
+        obj.originalDate = results[0]._doc.time;
+        response.push(obj);
+        console.log("responseMin : ", response);
+        responseMin = response;
+        resolve();
+      } else {
+        console.log("####### results == null ###### : ");
+        reject();
+        res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
+        res.write('<h2>사용자 리스트 조회  실패</h2>');
+        res.end();
+      }
+    });
   });
-});
 }
 var listInfoStat = function(req, res) {
     console.log('@@@ temp_humid_info 모듈 안에 있는 listInfoStat 호출됨.');
@@ -354,115 +356,19 @@ var listInfoStat = function(req, res) {
       // console.log("====== database db ======");
       // console.dir(database.db);
       // 1. 최대습도/온도 정보 검색
+      console.log("=========");
+      console.log(getMax(database).then(getMin(database)));
       getMax(database).then(getMin(database)).then(function(){
         if(responseMax != null && responseMax != undefined &&
                       responseMin != null && responseMin != undefined){
             // res.statusCode = 200;
+            console.log("=====@@@@ here @@@@====");
+
+            console.log("max : ", responseMax);
+            console.log("min : ", responseMin);
             return res.send([{"max":responseMax}, {"min":responseMin}]);
         }
-      })
-      // database.tempHuModel.findMax(function(err, results) {
-      //   console.log("herrrrrrrr?");
-      //   // 에러 발생 시, 클라이언트로 에러 전송
-      //   if (err) {
-      //     console.error('온도/습도 조회 중 에러 발생 : ' + err.stack);
-      //     res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
-      //     res.write('<h2>사용자 리스트 조회 중 에러 발생</h2>');
-      //     res.write('<p>' + err.stack + '</p>');
-      //     res.end();
-      //     return;
-      //   }
-      //   //Data 조회 성공시
-      //   if (results) {
-      //     console.log("#######=====##### results : ");
-      //     console.log(results);
-      //     var response = new Array();
-      //     var obj = {};
-      //     obj.maxHumidity = results[0]._doc.humid;
-      //     obj.maxTemperature = results[0]._doc.temp;
-      //     obj.date = results[0]._doc.time.getTime();
-      //     obj.originalDate = results[0]._doc.time;
-      //     response.push(obj);
-      //     console.log("responseMax : ", response);
-      //     responseMax = response;
-      //
-      //   } else {
-      //     console.log("####### results == null ###### : ");
-      //
-      //     res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
-      //     res.write('<h2>사용자 리스트 조회  실패</h2>');
-      //     res.end();
-      //   }
-      //
-      // });
-
-      // database.tempHuModel.findMax(function(err, results) {
-      //   console.log("herrrrrrrr?");
-      //   // 에러 발생 시, 클라이언트로 에러 전송
-      //   if (err) {
-      //     console.error('온도/습도 조회 중 에러 발생 : ' + err.stack);
-      //     res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
-      //     res.write('<h2>사용자 리스트 조회 중 에러 발생</h2>');
-      //     res.write('<p>' + err.stack + '</p>');
-      //     res.end();
-      //     return;
-      //   }
-      //   //Data 조회 성공시
-      //   if (results) {
-      //     console.log("#######=====##### results : ");
-      //     console.log(results);
-      //     var response = new Array();
-      //     var obj = {};
-      //     obj.maxHumidity = results[0]._doc.humid;
-      //     obj.maxTemperature = results[0]._doc.temp;
-      //     obj.date = results[0]._doc.time.getTime();
-      //     obj.originalDate = results[0]._doc.time;
-      //     response.push(obj);
-      //     console.log("responseMax : ", response);
-      //     responseMax = response;
-      //
-      //   } else {
-      //     console.log("####### results == null ###### : ");
-      //
-      //     res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
-      //     res.write('<h2>사용자 리스트 조회  실패</h2>');
-      //     res.end();
-      //   }
-      //
-      // });
-
-
-        // 2. 최저습도/온도 정보 검색
-      // database.tempHuModel.findMin(function(err, results) {
-      //   // 에러 발생 시, 클라이언트로 에러 전송
-      //   if (err) {
-      //     console.error('온도/습도 조회 중 에러 발생 : ' + err.stack);
-      //     res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
-      //     res.write('<h2>사용자 리스트 조회 중 에러 발생</h2>');
-      //     res.write('<p>' + err.stack + '</p>');
-      //     res.end();
-      //     return;
-      //   }
-      //   //Data 조회 성공시
-      //   if (results) {
-      //     var response = new Array();
-      //     var obj = {};
-      //     obj.maxHumidity = results[0]._doc.humid;
-      //     obj.maxTemperature = results[0]._doc.temp;
-      //     obj.date = results[0]._doc.time.getTime();
-      //     obj.originalDate = results[0]._doc.time;
-      //     response.push(obj);
-      //     console.log("responseMin : ", response);
-      //     responseMin = response;
-      //
-      //   } else {
-      //     res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
-      //     res.write('<h2>사용자 리스트 조회  실패</h2>');
-      //     res.end();
-      //   }
-      // });
-
-
+      });
     } else {
       res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
       res.write('<h2>데이터베이스 연결 실패</h2>');
