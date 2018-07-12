@@ -350,8 +350,8 @@
                                         <th>CSS grade</th> -->
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr class="odd gradeX">
+                                <tbody class="gate-table-body">
+                                    <!-- <tr class="odd gradeX">
                                         <td> "2018-06-25 20:33:44"</td>
                                         <td>1</td>
                                         <td>In</td>
@@ -434,16 +434,11 @@
                                         <td> "2018-06-25 20:33:44"</td>
                                         <td>1</td>
                                         <td>Out</td>
-                                    </tr>
+                                    </tr> -->
 
                                 </tbody>
                             </table>
                             <!-- /.table-responsive -->
-                            <!-- <div class="well">
-                                <h4>DataTables Usage Information</h4>
-                                <p>DataTables is a very flexible, advanced tables plugin for jQuery. In SB Admin, we are using a specialized version of DataTables built for Bootstrap 3. We have also customized the table headings to use Font Awesome icons in place of images. For complete documentation on DataTables, visit their website at <a target="_blank" href="https://datatables.net/">https://datatables.net/</a>.</p>
-                                <a class="btn btn-default btn-lg btn-block" target="_blank" href="https://datatables.net/">View DataTables Documentation</a>
-                            </div> -->
                         </div>
                         <!-- /.panel-body -->
                     </div>
@@ -469,7 +464,6 @@
     <!-- Morris Charts JavaScript -->
     <!-- <script src="../vendor/raphael/raphael.min.js"></script> -->
     <!-- <script src="../vendor/morrisjs/morris.min.js"></script> -->
-    <!-- <script src="../data/morris-data.js"></script> -->
 
     <!-- Custom Theme JavaScript -->
     <script src="../dist/js/sb-admin-2.js"></script>
@@ -481,19 +475,13 @@
     <script src="../vendor/flot/jquery.flot.resize.js"></script>
     <script src="../vendor/flot/jquery.flot.time.js"></script>
     <script src="../vendor/flot-tooltip/jquery.flot.tooltip.min.js"></script>
-    <script src="../data/flot-data.js"></script>
+    <script src="../pages/data/morris-data.js"></script>
 
     <!-- DataTables JavaScript -->
     <script src="../vendor/datatables/js/jquery.dataTables.min.js"></script>
     <script src="../vendor/datatables-plugins/dataTables.bootstrap.min.js"></script>
     <script src="../vendor/datatables-responsive/dataTables.responsive.js"></script>
-    <script>
-    $(document).ready(function() {
-        $('#dataTables-example').DataTable({
-            responsive: true
-        });
-    });
-    </script>
+
 
 </body>
 

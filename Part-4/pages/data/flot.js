@@ -263,7 +263,6 @@ $(function() {
 });
 
 //Flot Bar Chart
-
 // $(function() {
 //
 //     var barOptions = {

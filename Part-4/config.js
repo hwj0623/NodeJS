@@ -16,10 +16,10 @@ module.exports = {
         modelName : 'tempHuModel'
     },
     {
-        file:'./human_cnt',
-        collection:'human_cnt',
-        schemaName : 'humanCountSchema',
-        modelName : 'humanCountModel'
+        file:'./human_cnt_schema',
+        collection:'human_cnts',
+        schemaName : 'gateInOutSchema',
+        modelName : 'gateInOutModel'
     }
   ],
   route_info : [
@@ -46,6 +46,9 @@ module.exports = {
       },
       {
         file : './temp_humid_info', path:'/process/info/stat', method : 'listInfoStat', type:'get'
+      },
+      {
+        file : './gate_info', path:'/process/gate', method : 'GateInfoAll', type:'get'
       }
 
   ]

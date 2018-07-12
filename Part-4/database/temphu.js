@@ -31,7 +31,7 @@ tempHuSchema.createSchema = function (mongoose){
   		return time.length;
   	}, 'time 칼럼의 값이 없습니다.');
 
-    // 스키마에 static 메소드 추가
+    // 스키마의 tempHuModel에 static 메소드 추가
   	TH_Schema.static('findByPage', function( callback) {
       console.log("@@@@@@@@@@ num : "+num);
       return this.find({}, callback).limit(1).skip(num++).sort({data:1});
