@@ -357,13 +357,13 @@ var listInfoStat = function(req, res) {
       // console.dir(database.db);
       // 1. 최대습도/온도 정보 검색
       console.log("=========");
+      // console.log(getMax(database).then(getMin(database)));
       console.log(getMax(database).then(getMin(database)));
       getMax(database).then(getMin(database)).then(function(){
         if(responseMax != null && responseMax != undefined &&
                       responseMin != null && responseMin != undefined){
             // res.statusCode = 200;
             console.log("=====@@@@ here @@@@====");
-
             console.log("max : ", responseMax);
             console.log("min : ", responseMin);
             return res.send([{"max":responseMax}, {"min":responseMin}]);

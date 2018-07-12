@@ -200,6 +200,7 @@ $(function() {
     var tempData = [];
     var humidData = [];
 
+    var currentHumid = "";
     // Determine how many data points to keep based on the placeholder's initial size;
     // this gives us a nice high-res plot while avoiding more than one point per pixel.
 
@@ -215,17 +216,18 @@ $(function() {
           // for(var i=0; i<res.data.length; i++){
             temp.push([res.data[0].date, res.data[0].temperature]);
             humid.push([res.data[0].date, res.data[0].humidity]);
-               $('.current-humidity').text(res.data[0].humidity);
-               var curMaxTemp = Number($('.max-temperature').text());
-               var curMinTemp = Number($('.min-temperature').text());
-               if ( curMaxTemp < res.data[0].temperature){
-                      curMaxTemp = res.data[0].temperature;
-                      $('.max-temperature').text(curMaxTemp);
-               }
-               if ( curMinTemp > res.data[0].temperature){
-                      curMinTemp = res.data[0].temperature;
-                      $('.min-temperature').text(curMinTemp);
-               }
+            currentHumid = res.data[0].humidity;
+             $('.current-humidity').text(currentHumid);
+             var curMaxTemp = Number($('.max-temperature').text());
+             var curMinTemp = Number($('.min-temperature').text());
+             if ( curMaxTemp < res.data[0].temperature){
+                    curMaxTemp = res.data[0].temperature;
+                    $('.max-temperature').text(curMaxTemp);
+             }
+             if ( curMinTemp > res.data[0].temperature){
+                    curMinTemp = res.data[0].temperature;
+                    $('.min-temperature').text(curMinTemp);
+             }
 
         }
       })
@@ -243,8 +245,8 @@ $(function() {
           humid.slice(1);
         }
 
-        if(tempRes.length>=max){
-          tempData = tempData.slice(1);
+        if(tempRes.length >= max){
+          tempRes = tempRes.slice(1);
         }
         if(idx>temp.length){
           idx = 0;
@@ -255,11 +257,12 @@ $(function() {
 
         for (var i = 0; i < temp.length; ++i) {
             // res.push([i, data[i]])
-            console.log("temp[i][0] as date : ",temp[i][0]);
-            console.log("temp[i][1] as temperature : ",temp[i][1]);
+            // console.log("temp[i][0] as date : ",temp[i][0]);
+            // console.log("temp[i][1] as temperature : ",temp[i][1]);
             tempRes.push([temp[i][0],temp[i][1]]);
         }
         console.log("tempRes : ", tempRes);
+
         return tempRes;
     }
 
@@ -340,7 +343,7 @@ $(function() {
         plot.setupGrid();
         plot.draw();
         // console.log( new Date("2018-06-27 19:02:08").getTime());
-    }, 6000);
+    }, 1000);
 });
 
 //Flot Bar Chart

@@ -2,7 +2,6 @@ var tempHuSchema = { };
 var mongoosePaginate = require('mongoose-paginate');
 
 var num = 0;
-
 tempHuSchema.createSchema = function (mongoose){
   //스키마 정의
   var TH_Schema = mongoose.Schema({
@@ -34,7 +33,14 @@ tempHuSchema.createSchema = function (mongoose){
     // 스키마의 tempHuModel에 static 메소드 추가
   	TH_Schema.static('findByPage', function( callback) {
       console.log("@@@@@@@@@@ num : "+num);
-      return this.find({}, callback).limit(1).skip(num++).sort({data:1});
+      console.log(this.count());
+      if(num >= 94){
+        num = 0;
+      }
+
+      var obj = this.find({}, callback).limit(1).skip(num++).sort({data:1});
+      console.log(obj);
+      return obj;
   	});
 
   	TH_Schema.static('findAll', function( callback) {

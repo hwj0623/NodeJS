@@ -159,8 +159,8 @@ $(function() {
           humid.slice(1);
         }
 
-        if(tempRes.length>=max){
-          tempData = tempData.slice(1);
+        if(tempRes.length >= max){
+          tempRes = tempRes.slice(1);
         }
         if(idx>temp.length){
           idx = 0;
