@@ -113,11 +113,10 @@ $(function() {
     var humid = [];
     var idx=0;
     var container = $("#flot-line-chart-moving");
-    var tempData = [];
-    var humidData = [];
-
-    // Determine how many data points to keep based on the placeholder's initial size;
-    // this gives us a nice high-res plot while avoiding more than one point per pixel.
+    // var tempData = [];
+    // var humidData = [];
+    var tempRes = [];
+    var humidRes = [];
 
     var maximum = 20;//container.outerWidth() / 2 || 300;
 
@@ -128,9 +127,15 @@ $(function() {
         type: 'GET',
         success : function(res){
           console.log("res.data : ", res.data[0]);
-          // for(var i=0; i<res.data.length; i++){
+
             temp.push([res.data[0].date, res.data[0].temperature]);
             humid.push([res.data[0].date, res.data[0].humidity]);
+            if(temp.length > maximum){
+              temp.slice(1);
+            }
+            if(humid.length > maximum){
+              humid.slice(1);
+            }
                $('.current-humidity').text(res.data[0].humidity);
                var curMaxTemp = Number($('.max-temperature').text());
                var curMinTemp = Number($('.min-temperature').text());
@@ -149,32 +154,32 @@ $(function() {
 
     function getRandomData() {
         var max = 20;
-        var tempRes = [];
-        var humidRes = [];
+
         getData();
-        if(temp.length > max){
-          temp.slice(1);
-        }
-        if(humid.length > max){
-          humid.slice(1);
-        }
 
         if(tempRes.length >= max){
           tempRes = tempRes.slice(1);
         }
+        if(temp.length > max){
+          temp = temp.slice(1);
+        }
+        if(humid.length > max){
+          humid = humid.slice(1);
+        }
+
         if(idx>temp.length){
           idx = 0;
         }
-        // console.log("date : ", temp[i][0], " temp : ", temp[i][1]);
-        // tempData.push(temp[idx++]);
 
 
-        for (var i = 0; i < temp.length; ++i) {
-            // res.push([i, data[i]])
-            console.log("temp[i][0] as date : ",temp[i][0]);
-            console.log("temp[i][1] as temperature : ",temp[i][1]);
-            tempRes.push([temp[i][0],temp[i][1]]);
-        }
+        // for (var i = 0; i < temp.length; ++i) {
+            // console.log("temp[i][0] as date : ",temp[temp.length-1][0]);
+            // console.log("temp[i][1] as temperature : ",temp[temp.length-1][1]);
+            if(temp.length>1)
+              tempRes.push([temp[temp.length-1][0],temp[temp.length-1][1]]);
+        // }
+        console.log("==== temp, humid 길이 ==== ");
+        console.log(temp.length+", "+humid.length);
         console.log("tempRes : ", tempRes);
         return tempRes;
     }
@@ -259,7 +264,7 @@ $(function() {
         plot.setupGrid();
         plot.draw();
         // console.log( new Date("2018-06-27 19:02:08").getTime());
-    }, 6000);
+    }, 1000);
 });
 
 //Flot Bar Chart
