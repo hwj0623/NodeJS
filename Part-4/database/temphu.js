@@ -33,13 +33,13 @@ tempHuSchema.createSchema = function (mongoose){
     // 스키마의 tempHuModel에 static 메소드 추가
   	TH_Schema.static('findByPage', function( callback) {
       console.log("@@@@@@@@@@ num : "+num);
-      console.log(this.count());
+      // console.log(this.count());
       if(num >= 94){
         num = 0;
       }
 
       var obj = this.find({}, callback).limit(1).skip(num++).sort({data:1});
-      console.log(obj);
+      // console.log(obj);
       return obj;
   	});
 

@@ -32,10 +32,9 @@ $(function() {
     $('#dataTables-example').DataTable({
         responsive: true
     });
-    // return "right";
   }
 
-  promise.then(renderingTable);
+  promise = promise.then(renderingTable);
 
     //
     //

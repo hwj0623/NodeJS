@@ -41,17 +41,19 @@ gateInOutSchema.createSchema = function (mongoose){
       console.log("this : ", this);
   		return this.find({}, callback);
   	});
+    // 스키마의 모델 gateInOutModel에 static 메소드 추가 -- IN count
+    Gate_Schema.static('findInCount', function( callback) {
+      console.log("=== findInCount 호출 ===");
+      console.log("this : ", this);
+      return this.count({remark : "IN"}, callback);
+    });
+    // 스키마의 모델 gateInOutModel에 static 메소드 추가 -- OUT count
+    Gate_Schema.static('findOutCount', function( callback) {
+      console.log("=== findOutCount 호출 ===");
+      console.log("this : ", this);
+      return this.count({remark : "OUT"}, callback);
+    });
 
-    // Gate_Schema.static('findMax', function( callback) {
-    //   console.log("=== findMax 호출 ===");
-    //   // console.log(this.find({}).limit(1).sort({temp : -1}));
-    //   return this.find({}, callback).limit(1).sort({temp: -1});
-    // });
-    //
-    // Gate_Schema.static('findMin', function( callback) {
-    //   console.log("=== findMin 호출 ===")
-    //   return this.find({}, callback).limit(1).sort({temp : 1});//.aggregate([{$sort : {temp : 1}}, {$limit:1}]);
-    // });
     console.log('Gate_Schema 정의함 ');
 
     return Gate_Schema;

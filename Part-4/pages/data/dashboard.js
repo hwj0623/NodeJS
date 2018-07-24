@@ -57,45 +57,6 @@ $(document).ready(function() {
     // }
 });
 
-//Flot Pie Chart
-// $(function() {
-//
-//     var data = [{
-//         label: "Series 0",
-//         data: 1
-//     }, {
-//         label: "Series 1",
-//         data: 3
-//     }, {
-//         label: "Series 2",
-//         data: 9
-//     }, {
-//         label: "Series 3",
-//         data: 20
-//     }];
-//
-//     var plotObj = $.plot($("#flot-pie-chart"), data, {
-//         series: {
-//             pie: {
-//                 show: true
-//             }
-//         },
-//         grid: {
-//             hoverable: true
-//         },
-//         tooltip: true,
-//         tooltipOpts: {
-//             content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
-//             shifts: {
-//                 x: 20,
-//                 y: 0
-//             },
-//             defaultTheme: false
-//         }
-//     });
-//
-// });
-
 //Flot Multiple Axes Line Chart
 $(function() {
 
@@ -184,9 +145,54 @@ $(function() {
     // }, 6000);
 });
 
-//Min/Max Temperature, Humidity
+// ====== Human cnt ======
 $(function() {
-
+  function updateCnt(){
+    var inCount = null;
+    var outCount = null;
+    var curCount = null;
+    //Promise object
+    var promise =  new Promise(function (resolve, reject){
+          $.ajax({
+            url : './process/gate/stat/1',
+            type : 'GET',
+            success : function(res){
+              resolve(res);
+            }
+          });
+        });
+    //Function that returns Promise
+    function outCountFunc(){
+      return new Promise(function (resolve, reject){
+          $.ajax({
+            url : './process/gate/stat/2',
+            type : 'GET',
+            success : function(response){
+              resolve(response);
+            }
+          });
+        });
+      };
+    promise = promise
+        .then(function(res){
+        console.log("Human In cnt ==== : ", res);
+        inCount = res.data;
+        console.log("inCount :  ", inCount);
+    }).then(outCountFunc).then(function(response){
+      console.log("Human Out cnt ==== : ", response);
+      console.log("response" , response);
+      outCount = response.data;
+      console.log("outCount :  ", outCount);
+    }).then(function(){
+      curCount = inCount - outCount;
+      if(curCount < 0){
+        curCount = 0;
+      }
+    $('.current-human-cnt').text(curCount);
+    });
+  };
+  updateCnt();
+  setInterval(updateCnt, 3000);
 
 });
 
@@ -201,7 +207,7 @@ $(function() {
     var tempRes = [];
     var humidRes = [];
 
-    var maximum = 20;//container.outerWidth() / 2 || 300;
+    var maximum = 10;//container.outerWidth() / 2 || 300;
 
     var data = [];
     function getData(){
@@ -229,7 +235,7 @@ $(function() {
 
 
     function getRandomData() {
-        var max = 20;
+        var max = 10;
 
         getData();
 
@@ -249,18 +255,18 @@ $(function() {
         if(temp.length>=1){
           tempRes.push([temp[temp.length-1][0],temp[temp.length-1][1]]);
         }
-        console.log("==== temp, humid 길이 ==== ");
-        console.log(temp.length+", "+humid.length);
+        // console.log("==== temp, humid 길이 ==== ");
+        // console.log(temp.length+", "+humid.length);
         if(temp.length > max){
-          console.log("temp slice 1");
-          console.log(temp);
+          // console.log("temp slice 1");
+          // console.log(temp);
           temp.slice(1,21);
         }
         if(humid.length > max){
-          console.log("humid slice 1");
+          // console.log("humid slice 1");
           humid.slice(1,21);
         }
-        console.log("tempRes : ", tempRes);
+        // console.log("tempRes : ", tempRes);
         return tempRes;
     }
 
@@ -343,7 +349,6 @@ $(function() {
 
 
 //Flot Bar Chart
-
 // $(function() {
 //
 //     var barOptions = {
