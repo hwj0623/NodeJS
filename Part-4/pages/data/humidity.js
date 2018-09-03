@@ -94,7 +94,9 @@ $(function() {
                 xDateFormat: "%H:%M%:%S",
                 onHover: function(flotItem, $tooltipEl) {
                 }
-            }
+            },
+            colors: "#0022FF",
+            border:'2px solid'
         }); //end of doPlot
     }
 });
@@ -255,5 +257,5 @@ $(function() {
         plot.setupGrid();
         plot.draw();
 
-    }, 1000);
+    }, 7000);
 });

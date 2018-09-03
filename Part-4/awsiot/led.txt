@@ -1,0 +1,24 @@
+
+//aws sdk javascript 설치필요
+var awsIot = require('aws-iot-device-sdk');
+ 
+var device = awsIot.device({
+   keyPath: '650fc462a6-private.pem.key',
+  certPath: '650fc462a6-certificate.pem.crt',
+    caPath: 'rootCA.pem',
+   host: 'aw7xgukdrfwok.iot.us-east-2.amazonaws.com'
+});
+ 
+//
+// Device is an instance returned by mqtt.Client(), see mqtt.js for full
+// documentation.
+//
+//
+device
+  .on('connect', function() {
+    console.log('connect');
+    //device.subscribe('redirect'); //aws에서 subscribe할 topic
+
+    device.publish('sungsik2', JSON.stringify({ test_data: '2'})); //aws로 publish할 topic
+  });
+ 

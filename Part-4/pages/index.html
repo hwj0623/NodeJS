@@ -25,7 +25,10 @@
 
     <!-- Custom Fonts -->
     <link href="../vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
+    <script src="../public/jquery-3.1.1.min.js"></script>
 
+	  <script src="../public/semantic.min.js"></script>
+    <link href="../public/semantic.min.css" rel="stylesheet" >
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -35,6 +38,10 @@
   <style>
   .top-toggle{
     { display: none }
+  }
+  #air-toggle{
+    position: absolute;
+    right:30px;
   }
   </style>
 </head>
@@ -327,12 +334,34 @@
         <div id="page-wrapper">
             <div class="row">
                 <div class="col-lg-12">
-                    <h1 class="page-header">Dashboard</h1>
-                </div>
+                    <!-- <div class="col-lg-6"> -->
+                      <table>
+                        <tr>
+                          <td>
+                        <h1 class="page-header">Dashboard</h1>
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>
+                            <!-- <ul class="right"> -->
+                            <div class="ui toggle checkbox " id="air-toggle" >
+                              <input class="ui toggle checkbox "  type="checkbox" name="saveOption">
+                              <label>Air Controller</label>
+                            </div>
+                            <!-- </ul> -->
+                          </td>
+                      <tr>
+                      <table>
+                    <!-- </div> -->
+                    <!-- <div class="col-lg-6"> -->
+
+                    <!-- </div> -->
+                  </div>
                 <!-- /.col-lg-12 -->
             </div>
             <!-- /.row -->
-
+            <br>
+            <br>
             <div class="row top-toggle">
                 <div class="col-lg-3 col-md-6">
                     <div class="panel panel-green">
@@ -343,6 +372,7 @@
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div class="huge current-human-cnt">106</div>
+                                    <br>
                                     <div>사무실 인원</div>
                                 </div>
                             </div>
@@ -365,6 +395,7 @@
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div class="huge max-temperature"></div>
+                                    <br>
                                     <div>최고온도</div>
                                 </div>
                             </div>
@@ -387,6 +418,7 @@
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div class="huge min-temperature"></div>
+                                    <br>
                                     <div>최저온도</div>
                                 </div>
                             </div>
@@ -409,6 +441,7 @@
                                 </div>
                                 <div class="col-xs-9 text-right">
                                     <div class="huge current-humidity">79%</div>
+                                    <br>
                                     <div>습도</div>
                                 </div>
                             </div>
@@ -429,26 +462,26 @@
             <div class="row">
                 <div class="col-lg-12">
 
-                    <div class="col-lg-6">
+                    <!-- <div class="col-lg-6">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Moving Line Chart Example
-                            </div>
+                                실시간 온도 수집 그래프
+                            </div> -->
                             <!-- /.panel-heading -->
-                            <div class="panel-body">
+                            <!-- <div class="panel-body">
                                 <div class="flot-chart">
                                     <div class="flot-chart-content" id="flot-line-chart-moving"></div>
                                 </div>
-                            </div>
+                            </div> -->
                             <!-- /.panel-body -->
-                        </div>
+                        <!-- </div> -->
                         <!-- /.panel -->
-                    </div>
+                    <!-- </div> -->
                     <!-- /.col-lg-6 -->
-                    <div class="col-lg-6">
+                    <div class="col-lg-12">
                         <div class="panel panel-default">
                             <div class="panel-heading">
-                                Bar Chart Example
+                                누적 온도/습도 기록 그래프
                             </div>
                             <!-- /.panel-heading -->
                             <div class="panel-body">
@@ -486,7 +519,7 @@
 
 
     <!-- Flot Charts JavaScript -->
-    <script src="../vendor/flot/excanvas.min.js"></script>
+    <script src="../vendor/flot/excanvas.js"></script>
     <script src="../vendor/flot/jquery.flot.js"></script>
     <script src="../vendor/flot/jquery.flot.pie.js"></script>
     <script src="../vendor/flot/jquery.flot.resize.js"></script>

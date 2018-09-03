@@ -34,7 +34,21 @@ var database = require('./database/database');
 // 모듈로 분리한 라우팅 파일 불러오기
 var route_loader = require('./routes/route_loader');
 
+//AWS Iot Device ( 2018/09/04)
+var awsIot = require('./routes/iot_mqtt');
 
+
+var device = awsIot.device({
+
+});
+
+device
+  .on('connect', function() {
+    console.log('connect');
+    //device.subscribe('redirect'); //aws에서 subscribe할 topic
+
+    device.publish('sungsik2', JSON.stringify({ test_data: '2'})); //aws로 publish할 topic
+});
 
 //express 객체 설정
 var app = express();
@@ -43,7 +57,7 @@ var app = express();
 console.log('config.server_port : %d', config.server_port);
 app.set('port', process.env.PORT || 3000);
 
-// body-parser를 사용해 application/x-www-form-urlencoded 파싱
+// body-parser를 사용해 a®pplication/x-www-form-urlencoded 파싱
 app.use(bodyParser.urlencoded( { extended:false } ));
 
 //body-parser를 사용해 application/json 파싱
@@ -73,7 +87,7 @@ route_loader.init(app, express.Router());
 //========== 404 오류 페이지 처리 =========
 var errorHandler = expressErrorHandler({
   static : {
-    '404' : './node_Part_4/Part-4/public/404.html'
+    '404' : './Part-4/public/404.html'
   }
 });
 //

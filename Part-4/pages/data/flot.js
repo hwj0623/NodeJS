@@ -264,7 +264,7 @@ $(function() {
         plot.setupGrid();
         plot.draw();
         // console.log( new Date("2018-06-27 19:02:08").getTime());
-    }, 1000);
+    }, 7000);
 });
 
 //Flot Bar Chart

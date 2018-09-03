@@ -3,6 +3,8 @@
  */
 
 var num = 1;
+var curMax = 0;
+var curMin = 60;
 var listInfoById = function(req, res) {
     console.log('temp_humid_info 모듈 안에 있는 실시간 온도 조회 함수 호출됨.');
 
@@ -34,7 +36,12 @@ var listInfoById = function(req, res) {
             obj.temperature = results[0]._doc.temp;
             obj.date =  results[0]._doc.time.getTime();
             obj.originalDate = results[0]._doc.time;
-            response.push(obj);
+            //아웃라이어 제거
+            if(results[0]._doc.humid >= 100 || results[0]._doc.temp >=50 || results[0]._doc.temp <-40){
+              continue;
+            }else{
+              response.push(obj);
+            }
           }
           console.log("======== response ========");
           console.log(response);
@@ -89,7 +96,12 @@ var listInfoAll = function(req, res) {
             obj.temperature = results[i]._doc.temp;
             obj.date =  results[i]._doc.time.getTime();
             obj.originalDate = results[i]._doc.time;
+            //아웃라이어 제거
+            if(results[0]._doc.humid >= 100 || results[0]._doc.temp >=50 || results[0]._doc.temp <-40){
+              continue;
+            }else{
             response.push(obj);
+            }
           }
           res.body = response;
           res.statusCode = 200;
@@ -128,14 +140,36 @@ function getMax(database){
       }
       //Data 조회 성공시
       if (results) {
-        console.log("#######=MAX=##### results : ");
+        console.log("#######=MAX=##### results : ", results[0]);
         var response = new Array();
+        //녹화용 코드
         var obj = {};
-        obj.maxHumidity = results[0]._doc.humid;
-        obj.maxTemperature = results[0]._doc.temp;
-        obj.date = results[0]._doc.time.getTime();
-        obj.originalDate = results[0]._doc.time;
+        for(var i=0; i<results.length; i++){
+
+          if(obj.maxTemperature == undefined){
+            obj.maxHumidity = results[i]._doc.humid;
+            obj.maxTemperature = results[i]._doc.temp;
+            obj.date = results[i]._doc.time.getTime();
+            obj.originalDate = results[i]._doc.time;
+          }else{
+            if(obj.maxTemperature <= results[i]._doc.temp){
+              obj.maxHumidity = results[i]._doc.humid;
+              obj.maxTemperature = results[i]._doc.temp;
+              obj.date = results[i]._doc.time.getTime();
+              obj.originalDate = results[i]._doc.time;
+            }
+          }
+        }
         response.push(obj);
+        console.log("response MAAX $$$$$$$$$===$$$$$$ ");
+
+        //원래 코드
+        // var obj = {};
+        // obj.maxHumidity = results[0]._doc.humid;
+        // obj.maxTemperature = results[0]._doc.temp;
+        // obj.date = results[0]._doc.time.getTime();
+        // obj.originalDate = results[0]._doc.time;
+        // response.push(obj);
         console.log("responseMax : ", response);
         responseMax = response;
         resolve();
@@ -165,13 +199,55 @@ function getMin(database){
       //Data 조회 성공시
       if (results) {
         var response = new Array();
-        var obj = {};
+
         console.log("#######=MIN=##### results : ");
-        obj.minHumidity = results[0]._doc.humid;
-        obj.minTemperature = results[0]._doc.temp;
-        obj.date = results[0]._doc.time.getTime();
-        obj.originalDate = results[0]._doc.time;
+
+
+        //녹화용 코드
+        var obj = {};
+        for(var i=0; i<results.length; i++){
+          if(obj.minTemperature == undefined){
+            obj.minHumidity = results[i]._doc.humid;
+            obj.minTemperature = results[i]._doc.temp;
+            obj.date = results[i]._doc.time.getTime();
+            obj.originalDate = results[i]._doc.time;
+          }else{
+            if(obj.minTemperature <= results[i]._doc.temp){
+              obj.minHumidity = results[i]._doc.humid;
+              obj.minTemperature = results[i]._doc.temp;
+              obj.date = results[i]._doc.time.getTime();
+              obj.originalDate = results[i]._doc.time;
+            }
+          }
+        }
         response.push(obj);
+        console.log("response MIN $$$$$$$$$===$$$$$$ ");
+
+        // for(var i=0; i<results.length; i++){
+        //   var obj = {};
+        //   obj.minHumidity = results[0]._doc.humid;
+        //   obj.minTemperature = results[0]._doc.temp;
+        //   obj.date = results[0]._doc.time.getTime();
+        //   obj.originalDate = results[0]._doc.time;
+        //
+        //   if(response.length == 0){
+        //     response.push(obj);
+        //   }
+        //   if(response.length>0){
+        //     if(results[i]._doc.temp < response[0]._doc.temp){
+        //       response.pop();
+        //       response.push(obj);
+        //     }
+        //   }
+        // }
+
+        //원래 코드
+        // var obj = {};
+        // obj.minHumidity = results[0]._doc.humid;
+        // obj.minTemperature = results[0]._doc.temp;
+        // obj.date = results[0]._doc.time.getTime();
+        // obj.originalDate = results[0]._doc.time;
+        // response.push(obj);
         console.log("responseMin : ", response);
         responseMin = response;
         resolve();
