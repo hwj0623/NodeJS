@@ -1,1 +1,3 @@
-# MongoDB, Express.js, Node.js  
+# MongoDB, Express.js, Node.js, Bootstrap,...
+### Raspberry Pi 3 Model B 를 이용한 온도/습도 센서 데이터 수집 및 Event 기반 aws iot mqtt 활용 방안
+-

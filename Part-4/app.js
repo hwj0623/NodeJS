@@ -41,7 +41,7 @@ var route_loader = require('./routes/route_loader');
 // var device = awsIot.device({
 //
 // });
-
+//
 // device
 //   .on('connect', function() {
 //     console.log('connect');
@@ -83,11 +83,13 @@ route_loader.init(app, express.Router());
 
 
 
-//test
+
 //========== 404 오류 페이지 처리 =========
 var errorHandler = expressErrorHandler({
   static : {
-    '404' : './Part-4/public/404.html'
+    // '404' : './node_Part_4/Part-4/public/404.html'
+    '404' : './public/404.html'
+
   }
 });
 //

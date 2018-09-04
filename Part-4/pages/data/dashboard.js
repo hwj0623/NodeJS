@@ -1,61 +1,8 @@
 //Flot Line Chart
 $(document).ready(function() {
+    var week = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
-    // $.ajax({
-    //   url : './process/info1',
-    //   dataType:'jsonp',
-    //   jsonp: 'jsonp',
-    //   method:'GET',
-    //   success:function(data){
-    //     console.log("success get data : " ,data);
-    //   }
-    // });
-    // var offset = 0;
-    // plot();
-    //
-    // function plot() {
-    //     var sin = [],
-    //         cos = [];
-    //     for (var i = 0; i < 12; i += 0.2) {
-    //         sin.push([i, Math.sin(i + offset)]);
-    //         cos.push([i, Math.cos(i + offset)]);
-    //     }
-    //
-    //     var options = {
-    //         series: {
-    //             lines: {
-    //                 show: true
-    //             },
-    //             points: {
-    //                 show: true
-    //             }
-    //         },
-    //         grid: {
-    //             hoverable: true //IMPORTANT! this is needed for tooltip to work
-    //         },
-    //         yaxis: {
-    //             min: -1.2,
-    //             max: 1.2
-    //         },
-    //         tooltip: true,
-    //         tooltipOpts: {
-    //             content: "'%s' of %x.1 is %y.4",
-    //             shifts: {
-    //                 x: -60,
-    //                 y: 25
-    //             }
-    //         }
-    //     };
-    //
-    //     var plotObj = $.plot($("#flot-line-chart"), [{
-    //             data: sin,
-    //             label: "sin(x)"
-    //         }, {
-    //             data: cos,
-    //             label: "cos(x)"
-    //         }],
-    //         options);
-    // }
+
     $('.checkbox').on('click', function(e){
       e.stopPropagation();
       // alert("clicked");
@@ -77,7 +24,59 @@ $(document).ready(function() {
           }
         })
       }
-    })
+    });
+
+    var weatherApiUrl='http://dataservice.accuweather.com/currentconditions/v1/223642?apikey=qvD1thdR0e3EjkElFEDd1eCq4b1bo3G0&language=ko&details=false';
+    //'http://apidev.accuweather.com/currentconditions/v1/223642.json?language=ko&apikey=hoArfRosT1215';
+    var forecastApiUrl='http://dataservice.accuweather.com/forecasts/v1/daily/5day/223642?apikey=qvD1thdR0e3EjkElFEDd1eCq4b1bo3G0&language=ko&details=true&metric=true';
+    //accuweather 현재 날씨 정보
+    $.ajax({
+      url : weatherApiUrl,
+      type:'GET',
+      success : function (data){
+        // console.log("현재 날씨정보 ", data);
+        // $('.weather-now > h3').text('측정 시간 : '+new Date(data[0].EpochTime));
+        // $('.weather-now > week-day-temperature .stat1').text('현재 날씨 : '+data[0].WeatherText);
+        // $('.weather-now > week-day-temperature .stat2').text('현재 온도 : '+data[0].Temperature.Metric.Value+'°C');
+        // $('.weather-now > week-day-temperature .stat3').text('현재 습도 : '+data[0].RelativeHumidity+'%');
+        // $('.weather-now > week-day-temperature .stat4').text('풍향 : '+data[0].Wind.Speed.Metric.Value+data[0].Wind.Speed.Metric.Unit);
+      }
+    });
+    //accuweather 5days 날씨 예보
+    $.ajax({
+      url : forecastApiUrl,
+      type:'GET',
+      success:function(data){
+        console.log("날씨예보 5days ", data);
+        for(var i=0; i<data.DailyForecasts.length; i++){
+          console.log(i+" 번째" ,data.DailyForecasts[i]);
+          var weatherIcon = data.DailyForecasts[i].Day.Icon;
+          console.log("weatherIcon : ", weatherIcon);
+          // var days = data.
+          if(weatherIcon < 3  ){
+            $('.day-'+i+'').addClass("sun");
+            $('.day-'+i+' .climacon').addClass("sun");
+          }else if(weatherIcon < 6){
+            $('.day-'+i+'').addClass('cloud').addClass("sun");
+            $('.day-'+i+' .climacon').addClass("cloud").addClass("sun");
+          }else if(weatherIcon < 11){
+            $('.day-'+i+'').addClass('cloud');
+            $('.day-'+i+' .climacon').addClass("cloud");
+          }else if(weatherIcon < 18){
+            $('.day-'+i+'').addClass("rain").addClass("sun");
+            $('.day-'+i+' .climacon').addClass("rain").addClass("sun");
+          }else if(weatherIcon == 18){
+            $('.day-'+i+'').addClass('rain');
+            $('.day-'+i+' .climacon').addClass('rain');
+          }
+
+          $('.day-'+i+' .week-day').text(week[new Date(data.DailyForecasts[i].Date).getDay()]);
+          $('.day-'+i+' .week-day-temperature.max').text(data.DailyForecasts[i].Temperature.Maximum.Value+"°C");
+          $('.day-'+i+' .week-day-temperature.min').text(data.DailyForecasts[i].Temperature.Minimum.Value+"°C");
+
+        }
+      }
+    });
 });
 
 //Flot Multiple Axes Line Chart
@@ -159,7 +158,7 @@ $(function() {
             }],
             yaxes: [{
                 min: 0,
-                tickDecimals : 3,
+                tickDecimals : 1,
                 tickFormatter: celciusFormatter
             }, {
                 // align if we are to the right
@@ -191,7 +190,7 @@ $(function() {
     }
   }
   getCumulatedData();
-  setInterval(getCumulatedData, 2000);
+  setInterval(getCumulatedData, 5000);
 
     // $("button").click(function() {
     //     doPlot($(this).text());
@@ -251,6 +250,6 @@ $(function() {
     });
   };
   updateCnt();
-  setInterval(updateCnt, 3000);
+  setInterval(updateCnt, 5000);
 
 });
