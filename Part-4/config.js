@@ -2,7 +2,6 @@ module.exports = {
 
   server_port : 3000,
   // db_url : 'mongodb://localhost:27017/local',
-  
   db_schemas:[
     {
       file:'./user_schema',
@@ -56,12 +55,13 @@ module.exports = {
       },
       {
         file : './gate_info', path:'/process/gate/stat/2', method : 'GateOutStat', type:'get'
-      },
-      {
-        file : './iot_mqtt', path:'/process/iot/controller/1', method : 'mqttOnCall',type:'PUT'
-      },
-      {
-        file : './iot_mqtt', path:'/process/iot/controller/0', method : 'mqttOffCall',type:'PUT'
       }
+      // ,
+      // {
+      //   file : './iot_mqtt', path:'/process/iot/controller/1', method : 'mqttOnCall',type:'PUT'
+      // },
+      // {
+      //   file : './iot_mqtt', path:'/process/iot/controller/0', method : 'mqttOffCall',type:'PUT'
+      // }
   ]
 }

@@ -84,5 +84,5 @@ var mqttOffCall = function(req, res) {
     // }
 };
 
-module.exports.mqttOnCall = mqttOnCall;
-module.exports.mqttOffCall = mqttOffCall;
+// module.exports.mqttOnCall = mqttOnCall;
+// module.exports.mqttOffCall = mqttOffCall;

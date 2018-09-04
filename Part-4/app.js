@@ -35,20 +35,20 @@ var database = require('./database/database');
 var route_loader = require('./routes/route_loader');
 
 //AWS Iot Device ( 2018/09/04)
-var awsIot = require('./routes/iot_mqtt');
+// var awsIot = require('./routes/iot_mqtt');
+//
+//
+// var device = awsIot.device({
+//
+// });
 
-
-var device = awsIot.device({
-
-});
-
-device
-  .on('connect', function() {
-    console.log('connect');
-    //device.subscribe('redirect'); //aws에서 subscribe할 topic
-
-    device.publish('sungsik2', JSON.stringify({ test_data: '2'})); //aws로 publish할 topic
-});
+// device
+//   .on('connect', function() {
+//     console.log('connect');
+//     //device.subscribe('redirect'); //aws에서 subscribe할 topic
+//
+//     device.publish('sungsik2', JSON.stringify({ test_data: '2'})); //aws로 publish할 topic
+// });
 
 //express 객체 설정
 var app = express();
