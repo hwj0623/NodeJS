@@ -34,21 +34,7 @@ var database = require('./database/database');
 // 모듈로 분리한 라우팅 파일 불러오기
 var route_loader = require('./routes/route_loader');
 
-//AWS Iot Device ( 2018/09/04)
-// var awsIot = require('./routes/iot_mqtt');
-//
-//
-// var device = awsIot.device({
-//
-// });
-//
-// device
-//   .on('connect', function() {
-//     console.log('connect');
-//     //device.subscribe('redirect'); //aws에서 subscribe할 topic
-//
-//     device.publish('sungsik2', JSON.stringify({ test_data: '2'})); //aws로 publish할 topic
-// });
+//AWS Iot Device ( 2018/09/04)--user.js에 임시 구현 
 
 //express 객체 설정
 var app = express();
@@ -67,6 +53,7 @@ app.use(bodyParser.json());
 app.use(static(path.join(__dirname, 'public')));
 app.use(static(path.join(__dirname, 'pages')));
 app.use(static(path.join(__dirname, '../Part-4')));
+app.use(static(path.join(__dirname, 'awsiot')));
 
 //cookie-parser 설정
 app.use(cookieParser());
@@ -118,3 +105,5 @@ http.createServer(app).listen(app.get('port'), function(){
   //Database 연결
   database.init(app, config);
 });
+
+// module.exports.

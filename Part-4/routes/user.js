@@ -218,6 +218,49 @@ var addUser = function(database, id, password, name, callback){
 }
 
 
+var mqttOnCall = function(req, res) {
+    console.log('iot_mqtt 모듈 안에 있는 mqttOnCall 호출됨.');
+    var awsIot = require('aws-iot-device-sdk');
+    // var device = awsIot.device;
+    console.log(awsIot);
+    var device = awsIot.device({
+      //device 정보 입력
+    });
+    console.log("-------OOoooooooNNNNNNN========")
+    device
+      .on('connect', function() {
+        console.log('===== iot connect =====@@@@$#@$@#%$$$$');
+        device.publish('sungsik2', JSON.stringify({ onOffSignal: '2'})); //aws로 publish할 topic
+    });
+
+    // device.publish('sungsik2', JSON.stringify({ onOffSignal: '2'})); //aws로 publish할 topic
+    res.end();
+    return;
+
+};
+var mqttOffCall = function(req, res) {
+    console.log('iot_mqtt 모듈 안에 있는 mqttOnCall 호출됨.');
+    var awsIot = require('aws-iot-device-sdk');
+    // var device = awsIot.device;
+    console.log(awsIot);
+    var device = awsIot.device({
+      //device 정보 입력
+    });
+    console.log("-------OFfffffffffffffff========")
+    device
+      .on('connect', function() {
+        console.log('===== iot connect =====@@@@$#@$@#%$$$$');
+        device.publish('sungsik2', JSON.stringify({ onOffSignal: '1'})); //aws로 publish할 topic
+    });
+
+    // device.publish('sungsik2', JSON.stringify({ onOffSignal: '2'})); //aws로 publish할 topic
+    res.end();
+    return;
+
+};
+module.exports.mqttOnCall = mqttOnCall;
+module.exports.mqttOffCall = mqttOffCall;
+
 module.exports.login = login;
 module.exports.adduser = adduser;
 module.exports.listuser = listuser;

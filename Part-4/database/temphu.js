@@ -1,7 +1,12 @@
 var tempHuSchema = { };
 var mongoosePaginate = require('mongoose-paginate');
+var numCall = 0;
+var num2Call = 0;
+var num3Call = 0;
 
 var num = 0;
+var num2 = 0;
+var num3 = 0;
 tempHuSchema.createSchema = function (mongoose){
   //스키마 정의
   var TH_Schema = mongoose.Schema({
@@ -46,21 +51,52 @@ tempHuSchema.createSchema = function (mongoose){
   	TH_Schema.static('findAll', function( callback) {
       console.log("=== find all 호출 ===")
       // console.dir(this.find({}));
-  		return this.find({}, callback).limit(50).skip(num++).sort({data:1});
+      if(num >= 80){
+        num = 0;
+      }
+      if(numCall>=200){
+        numCall=0;
+      }
+      if(numCall%2==0){
+          num++;
+      }
+      numCall++;
+
+  		return this.find({}, callback).limit(20).skip(num).sort({data:1});
   	});
 
     TH_Schema.static('findMax', function( callback) {
-      console.log("=== findMax 호출 ===");
+      // console.log("=== findMax 호출 ===");
       // console.log(this.find({}).limit(1).sort({temp : -1}));
       //수정코드
-      return this.find({}, callback).limit(50).skip(num++);//.sort({temp:-1}).limit(1);
+      if(num2 >= 80 ){
+        num2 = 0;
+      }
+      if(num2Call >= 200){
+        num2Call = 0;
+      }
+      if(num2Call%2==0){
+          num2++;
+      }
+      num2Call++;
+      return this.find({}, callback).limit(20).skip(num2);//.sort({temp:-1}).limit(1);
       //return this.find({}, callback).limit(1).sort({temp: -1});
     });
 
     TH_Schema.static('findMin', function( callback) {
-      console.log("=== findMin 호출 ===")
+      // console.log("=== findMin 호출 ===")
       //수정코드
-      return this.find({}, callback).limit(50).skip(num++);//.sort({temp:1}).limit(1);
+      if(num3 >= 80 ){
+        num3 = 0;
+      }
+      if(num3Call >= 200){
+        num3Call = 0;
+      }
+      if(num3Call%2==0){
+        num3++;
+      }
+      num3Call++;
+      return this.find({} ,callback).limit(20).skip(num3).sort({"temp":1});//.sort({temp:1}).limit(1);
       //  return this.find({}, callback).limit(1).sort({temp : 1});//.aggregate([{$sort : {temp : 1}}, {$limit:1}]);
     });
     console.log('TH_Schema 정의함 ');

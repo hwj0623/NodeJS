@@ -9,16 +9,17 @@ $(document).ready(function() {
       console.log(e.currentTarget.checked);
       if(e.currentTarget.checked){ //checked === true
         $.ajax({
-          url:'./process/iot/controller/1',
-          type: 'PUT',
+          url:'/process/controller/1',
+          type: 'GET',
           success : function(data){
             console.log("success");
           }
         })
-      }else{ //checked === false
+      }
+      else{ //checked === false
         $.ajax({
-          url:'./process/iot/controller/0',
-          type: 'PUT',
+          url:'./process/controller/0',
+          type: 'GET',
           success : function(data){
             console.log("success");
           }
@@ -26,20 +27,20 @@ $(document).ready(function() {
       }
     });
 
-    var weatherApiUrl='http://dataservice.accuweather.com/currentconditions/v1/223642?apikey=qvD1thdR0e3EjkElFEDd1eCq4b1bo3G0&language=ko&details=false';
+    var weatherApiUrl='http://dataservice.accuweather.com/currentconditions/v1/223642?apikey=oAp6SW0NWNQzm5S7dxqaxCEmh2uZfcD0&language=ko&details=true';
     //'http://apidev.accuweather.com/currentconditions/v1/223642.json?language=ko&apikey=hoArfRosT1215';
-    var forecastApiUrl='http://dataservice.accuweather.com/forecasts/v1/daily/5day/223642?apikey=qvD1thdR0e3EjkElFEDd1eCq4b1bo3G0&language=ko&details=true&metric=true';
+    var forecastApiUrl='http://dataservice.accuweather.com/forecasts/v1/daily/5day/223642?apikey=oAp6SW0NWNQzm5S7dxqaxCEmh2uZfcD0&language=ko&details=true&metric=true';
     //accuweather 현재 날씨 정보
     $.ajax({
       url : weatherApiUrl,
       type:'GET',
       success : function (data){
         // console.log("현재 날씨정보 ", data);
-        // $('.weather-now > h3').text('측정 시간 : '+new Date(data[0].EpochTime));
-        // $('.weather-now > week-day-temperature .stat1').text('현재 날씨 : '+data[0].WeatherText);
-        // $('.weather-now > week-day-temperature .stat2').text('현재 온도 : '+data[0].Temperature.Metric.Value+'°C');
-        // $('.weather-now > week-day-temperature .stat3').text('현재 습도 : '+data[0].RelativeHumidity+'%');
-        // $('.weather-now > week-day-temperature .stat4').text('풍향 : '+data[0].Wind.Speed.Metric.Value+data[0].Wind.Speed.Metric.Unit);
+        $('.weather-now > h1').text('측정 시간 : '+new Date(data[0].EpochTime));
+        $('.weather-now .stat1').text('현재 날씨 : '+data[0].WeatherText);
+        $('.weather-now .stat2').text('현재 온도 : '+data[0].Temperature.Metric.Value+'°C');
+        $('.weather-now .stat3').text('현재 습도 : '+data[0].RelativeHumidity+'%');
+        $('.weather-now .stat4').text('풍향 : '+data[0].Wind.Speed.Metric.Value+data[0].Wind.Speed.Metric.Unit);
       }
     });
     //accuweather 5days 날씨 예보
@@ -91,7 +92,7 @@ $(function() {
       url : './process/info/stat',
       type : 'GET',
       success : function(data){
-        // console.log("Min/Max data : ", data);
+        console.log("Min/Max data : ", data);
 
         //녹화용 코드
         // console.log("초기 최고온도 : ", $('.max-temperature').text());
@@ -123,7 +124,8 @@ $(function() {
                     type : 'GET'
                   });
     var renderingPlot = function (res){
-      // console.log("response : " , res);
+
+      console.log("response All 15 info : " , res);
       for(var i=0; i<res.data.length; i++){
         allTemp.push([res.data[i].date, res.data[i].temperature]);
         allHumid.push([res.data[i].date, res.data[i].humidity]);
@@ -157,10 +159,13 @@ $(function() {
                 minTickSize : [5, "second"]
             }],
             yaxes: [{
-                min: 0,
+                min: 20,
+                max: 28,
                 tickDecimals : 1,
                 tickFormatter: celciusFormatter
             }, {
+                min:30,
+                max:90,
                 // align if we are to the right
                 alignTicksWithAxis: position == "right" ? 1 : null,
                 position: position,
@@ -190,7 +195,7 @@ $(function() {
     }
   }
   getCumulatedData();
-  setInterval(getCumulatedData, 5000);
+  setInterval(getCumulatedData, 1000);
 
     // $("button").click(function() {
     //     doPlot($(this).text());
@@ -249,7 +254,7 @@ $(function() {
     $('.current-human-cnt').text(curCount);
     });
   };
-  updateCnt();
-  setInterval(updateCnt, 5000);
+  // updateCnt();
+  // setInterval(updateCnt, 5000);
 
 });

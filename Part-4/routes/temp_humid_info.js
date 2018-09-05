@@ -97,11 +97,11 @@ var listInfoAll = function(req, res) {
             obj.date =  results[i]._doc.time.getTime();
             obj.originalDate = results[i]._doc.time;
             //아웃라이어 제거
-            if(results[0]._doc.humid >= 100 || results[0]._doc.temp >=50 || results[0]._doc.temp <-40){
-              continue;
-            }else{
+            // if(results[0]._doc.humid >= 100 || results[0]._doc.temp >=50 || results[0]._doc.temp <-40){
+            //   continue;
+            // }else{
             response.push(obj);
-            }
+            // }
           }
           res.body = response;
           res.statusCode = 200;
@@ -127,7 +127,7 @@ var responseMin = null;
 function getMax(database){
   return new Promise(function (resolve, reject){
   database.tempHuModel.findMax(function(err, results) {
-      console.log("herrrrrrrr?");
+      // console.log("herrrrrrrr?");
       // 에러 발생 시, 클라이언트로 에러 전송
       if (err) {
         console.error('온도/습도 조회 중 에러 발생 : ' + err.stack);
@@ -140,7 +140,7 @@ function getMax(database){
       }
       //Data 조회 성공시
       if (results) {
-        console.log("#######=MAX=##### results : ", results[0]);
+        // console.log("#######=MAX=##### results : ", results[0]);
         var response = new Array();
         //녹화용 코드
         var obj = {};
@@ -161,7 +161,7 @@ function getMax(database){
           }
         }
         response.push(obj);
-        console.log("response MAAX $$$$$$$$$===$$$$$$ ");
+        // console.log("response MAAX $$$$$$$$$===$$$$$$ ");
 
         //원래 코드
         // var obj = {};
@@ -174,7 +174,7 @@ function getMax(database){
         responseMax = response;
         resolve();
       } else {
-        console.log("####### results == null ###### : ");
+        // console.log("####### results == null ###### : ");
         reject();
         res.writeHead('200', {'Content-Type':'text/html;charset=utf8'});
         res.write('<h2>사용자 리스트 조회  실패</h2>');
@@ -201,8 +201,7 @@ function getMin(database){
         var response = new Array();
 
         console.log("#######=MIN=##### results : ");
-
-
+        // console.dir(results);
         //녹화용 코드
         var obj = {};
         for(var i=0; i<results.length; i++){
@@ -220,11 +219,11 @@ function getMin(database){
             }
           }
         }
-        response.push(obj);
-        console.log("response MIN $$$$$$$$$===$$$$$$ ");
-
+        // response.push(obj);
+        // console.log("response MIN $$$$$$$$$===$$$$$$ ");
+        // var obj = {};
         // for(var i=0; i<results.length; i++){
-        //   var obj = {};
+        //   obj = {};
         //   obj.minHumidity = results[0]._doc.humid;
         //   obj.minTemperature = results[0]._doc.temp;
         //   obj.date = results[0]._doc.time.getTime();
@@ -241,13 +240,30 @@ function getMin(database){
         //   }
         // }
 
+        //0905 수정코드
+        if(results[0] !== undefined){
+          if(results[0]._doc!==undefined || results[0]._doc.humid !==undefined  ){
+              if(obj.minHumidity > results[0]._doc.humid){
+                obj.minHumidity =  results[0]._doc.humid;
+              }
+              if(obj.minTemperature > results[0]._doc.temp){
+                obj.minTemperature = results[0]._doc.temp
+              }
+              if(obj.date > results[0]._doc.time.getTime()){
+                obj.date = results[0]._doc.time.getTime();
+                obj.originalDate = results[0]._doc.time;
+              }
+          }
+        }
+        //end of 수정코드
+
         //원래 코드
         // var obj = {};
         // obj.minHumidity = results[0]._doc.humid;
         // obj.minTemperature = results[0]._doc.temp;
         // obj.date = results[0]._doc.time.getTime();
         // obj.originalDate = results[0]._doc.time;
-        // response.push(obj);
+        response.push(obj);
         console.log("responseMin : ", response);
         responseMin = response;
         resolve();
@@ -269,10 +285,8 @@ var listInfoStat = function(req, res) {
 
     // 데이터베이스 객체가 초기화된 경우, 모델 객체의 findAll 메소드 호출
     if (database.db) {
-      // console.log("====== database db ======");
-      // console.dir(database.db);
       // 1. 최대습도/온도 정보 검색
-      console.log("=========");
+      // console.log("=========");
       // console.log(getMax(database).then(getMin(database)));
       console.log(getMax(database).then(getMin(database)));
       getMax(database).then(getMin(database)).then(function(){

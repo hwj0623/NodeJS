@@ -56,12 +56,13 @@ module.exports = {
       {
         file : './gate_info', path:'/process/gate/stat/2', method : 'GateOutStat', type:'get'
       }
-      // ,
-      // {
-      //   file : './iot_mqtt', path:'/process/iot/controller/1', method : 'mqttOnCall',type:'PUT'
-      // },
-      // {
-      //   file : './iot_mqtt', path:'/process/iot/controller/0', method : 'mqttOffCall',type:'PUT'
-      // }
+      ,
+      {
+        file : './user', path:'/process/controller/1', method : 'mqttOnCall', type:'get'
+      }
+      ,
+      {
+        file : './user', path:'/process/controller/0', method : 'mqttOffCall',type:'get'
+      }
   ]
 }
