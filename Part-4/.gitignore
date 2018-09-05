@@ -5,3 +5,6 @@ config.*
 awsIot
 awsIot/
 user.js
+*.pem
+*.key
+*.txt
