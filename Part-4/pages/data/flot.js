@@ -178,9 +178,9 @@ $(function() {
             if(temp.length>1)
               tempRes.push([temp[temp.length-1][0],temp[temp.length-1][1]]);
         // }
-        console.log("==== temp, humid 길이 ==== ");
-        console.log(temp.length+", "+humid.length);
-        console.log("tempRes : ", tempRes);
+        // console.log("==== temp, humid 길이 ==== ");
+        // console.log(temp.length+", "+humid.length);
+        // console.log("tempRes : ", tempRes);
         return tempRes;
     }
 
@@ -189,7 +189,7 @@ $(function() {
     series = [{
         data: getRandomData(),
         lines: {
-            fill: true,
+            // fill: true,
             show: true
         }
     }];
@@ -253,57 +253,15 @@ $(function() {
             xDateFormat: "%H:%M:%S",
             onHover: function(flotItem, $tooltipEl) {
             }
-        }
+        },
+        colors: ["#EE0000"]
     });
 
-    // Update the random dataset at 25FPS for a smoothly-animating chart
-
+    // Update the random dataset at 1 second for a smoothly-animating chart
     setInterval(function updateRandom() {
         series[0].data = getRandomData();
         plot.setData(series);
         plot.setupGrid();
         plot.draw();
-        // console.log( new Date("2018-06-27 19:02:08").getTime());
-    }, 7000);
+    }, 1000);
 });
-
-//Flot Bar Chart
-// $(function() {
-//
-//     var barOptions = {
-//         series: {
-//             bars: {
-//                 show: true,
-//                 barWidth: 43200000
-//             }
-//         },
-//         xaxis: {
-//             mode: "time",
-//             timeformat: "%m/%d",
-//             minTickSize: [1, "day"]
-//         },
-//         grid: {
-//             hoverable: true
-//         },
-//         legend: {
-//             show: false
-//         },
-//         tooltip: true,
-//         tooltipOpts: {
-//             content: "x: %x, y: %y"
-//         }
-//     };
-//     var barData = {
-//         label: "bar",
-//         data: [
-//             [1354521600000, 1000],
-//             [1355040000000, 2000],
-//             [1355223600000, 3000],
-//             [1355306400000, 4000],
-//             [1355487300000, 5000],
-//             [1355571900000, 6000]
-//         ]
-//     };
-//     $.plot($("#flot-bar-chart"), [barData], barOptions);
-//
-// });

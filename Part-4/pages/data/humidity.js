@@ -246,7 +246,9 @@ $(function() {
             xDateFormat: "%H:%M:%S",
             onHover: function(flotItem, $tooltipEl) {
             }
-        }
+        },
+        colors: ["#0022FF"]
+
     });
 
     // Update the random dataset at 25FPS for a smoothly-animating chart
@@ -257,5 +259,5 @@ $(function() {
         plot.setupGrid();
         plot.draw();
 
-    }, 7000);
+    }, 1000);
 });
