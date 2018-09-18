@@ -8,3 +8,9 @@ user.js
 *.pem
 *.key
 *.txt
+pids
+*.pid
+*.seed
+*.pid.lock
+npm-debug.log*
+logs
