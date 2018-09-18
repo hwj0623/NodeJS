@@ -1,0 +1,10 @@
+node_modules
+bower_components
+./Part-4/config.js
+./Part-4/config.*
+awsIot
+awsIot/
+user.js
+*.pem
+*.key
+*.txt

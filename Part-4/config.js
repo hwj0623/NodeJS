@@ -1,6 +1,6 @@
 module.exports = {
 
-  server_port : 3000,
+  server_port : 80,
   // db_url : 'mongodb://localhost:27017/local',
   db_schemas:[
     {

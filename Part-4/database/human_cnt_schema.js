@@ -11,13 +11,6 @@ gateInOutSchema.createSchema = function (mongoose){
     time : {type: Date},
   });
 
-  // Gate_Schema.plugin(mongoosePaginate);
-    // 메소드 만들기
-    // TH_Schema.method('makeSalt', function(){
-    //   return Math.round((new Date().valueOf()*Math.random()))+'';
-    //
-    // });
-
     // 필수 속성에 대한 유효성 확인 (길이값 체크)
     Gate_Schema.path('remark').validate(function(remark){
       return remark.length;
